@@ -1,0 +1,9 @@
+[33m23b083a[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{0}: reset: moving to origin/main
+[33mefc68e5[m HEAD@{1}: commit: Removed large dataset.zip (too big for GitHub)
+[33ma76b1a3[m HEAD@{2}: rebase (finish): returning to refs/heads/main
+[33ma76b1a3[m HEAD@{3}: rebase (continue): Added backend and full project
+[33mc3b666d[m HEAD@{4}: pull origin main --rebase (pick): Update requirements.txt with google-generativeai
+[33m23b083a[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{5}: pull origin main --rebase (start): checkout 23b083a5120ed9b61d2fa1a9b44e404e708df594
+[33m02429dd[m HEAD@{6}: Branch: renamed refs/heads/master to refs/heads/main
+[33m02429dd[m HEAD@{8}: commit: Added backend and full project
+[33m58bc7b1[m HEAD@{9}: commit (initial): Update requirements.txt with google-generativeai

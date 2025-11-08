@@ -1,0 +1,131 @@
+index_html = '''
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Disease AI - Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <svg width="40" height="40" viewBox="0 0 40 40">
+                    <path d="M20 5 L20 35 M10 15 L20 5 L30 15 M15 25 C15 25 15 30 20 30 C25 30 25 25 25 25"
+                        stroke="#10b981" fill="none" stroke-width="2" />
+                </svg>
+                <h1>Crop Disease AI</h1>
+            </div>
+            <nav>
+                <a href="/" class="active">Dashboard</a>
+                <a href="/upload">Diagnose</a>
+                <a href="/chatbot">🤖 Ask Assistant</a>
+                <a href="/weather" id="weatherBtn">Weather</a>
+            </nav>
+        </header>
+
+        <!-- Dashboard Content -->
+        <main class="dashboard">
+            <!-- Welcome Section -->
+            <section class="welcome-card">
+                <h2>Welcome, Farmer! 🌾</h2>
+                <p>AI-powered crop disease detection and management at your fingertips</p>
+                <div class="quick-actions">
+                    <a href="/upload" class="btn btn-primary">Upload Leaf Image</a>
+                    <a href="#" class="btn btn-secondary" id="viewHistoryBtn">View History</a>
+                </div>
+            </section>
+
+            <!-- Stats Cards -->
+            <section class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">🔍</div>
+                    <div class="stat-info">
+                        <h3 id="totalPredictions">0</h3>
+                        <p>Total Diagnoses</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-info">
+                        <h3>95.2%</h3>
+                        <p>Model Accuracy</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🌡️</div>
+                    <div class="stat-info">
+                        <h3 id="currentTemp">--°C</h3>
+                        <p>Current Temperature</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💧</div>
+                    <div class="stat-info">
+                        <h3 id="currentHumidity">--%</h3>
+                        <p>Humidity</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Disease Risks -->
+            <section class="risk-section" id="riskSection" style="display:none;">
+                <h2>⚠️ Current Disease Risks</h2>
+                <div id="riskCards"></div>
+            </section>
+
+            <!-- Features -->
+            <section class="features">
+                <h2>How It Works</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">📸</div>
+                        <h3>1. Upload Image</h3>
+                        <p>Take a clear photo of the affected plant leaf</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🤖</div>
+                        <h3>2. AI Analysis</h3>
+                        <p>Our deep learning model analyzes the image instantly</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>3. Get Results</h3>
+                        <p>Receive disease identification with confidence scores</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">💊</div>
+                        <h3>4. Treatment Plan</h3>
+                        <p>Get customized treatment and prevention recommendations</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Chatbot -->
+        <div class="chatbot" id="chatbot">
+            <div class="chat-header">
+                <h3>🤖 Crop Disease Assistant</h3>
+                <button id="closeChatBtn">×</button>
+            </div>
+            <div class="chat-messages" id="chatMessages"></div>
+            <div class="chat-input">
+                <input type="text" id="chatInput" placeholder="Ask me anything...">
+                <button id="sendChatBtn">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+
+</html>'''
+
+# Save to file
+with open('frontend_index.html', 'w') as f:
+f.write(index_html)

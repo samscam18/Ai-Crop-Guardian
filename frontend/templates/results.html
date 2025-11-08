@@ -1,0 +1,225 @@
+<!-- 
+================================================================================
+FILE: frontend/templates/results.html - Results Display Page
+================================================================================
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnosis Results - Crop Disease AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .severity-high { color: #ef4444; }
+        .severity-medium { color: #f59e0b; }
+        .severity-low { color: #10b981; }
+        
+        .action-item {
+            background: white;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .treatment-section {
+            background: var(--light-gray);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <svg width="40" height="40" viewBox="0 0 40 40">
+                    <path d="M20 5 L20 35 M10 15 L20 5 L30 15 M15 25 C15 25 15 30 20 30 C25 30 25 25 25 25" 
+                          stroke="#10b981" fill="none" stroke-width="2"/>
+                </svg>
+                <h1>Crop Disease AI</h1>
+            </div>
+            <nav>
+                <a href="/">Dashboard</a>
+                <a href="/upload">Diagnose</a>
+                <a href="#" id="weatherBtn">Weather</a>
+                <a href="#" id="chatBtn">Help</a>
+            </nav>
+        </header>
+
+        <!-- Results Content -->
+        <main class="results-container">
+            <h1 style="text-align: center; margin-bottom: 2rem;">
+                🔬 Diagnosis Results
+            </h1>
+            
+            <div id="resultsContent">
+                <!-- Results will be dynamically loaded here -->
+                <div class="spinner"></div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 2rem;">
+                <a href="/upload" class="btn btn-primary">Analyze Another Image</a>
+                <a href="/" class="btn btn-secondary">Back to Dashboard</a>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Load results from sessionStorage
+        document.addEventListener('DOMContentLoaded', function() {
+            const results = sessionStorage.getItem('predictionResults');
+            
+            if (!results) {
+                window.location.href = '/upload';
+                return;
+            }
+            
+            const data = JSON.parse(results);
+            displayDetailedResults(data);
+        });
+        
+        function displayDetailedResults(data) {
+            const container = document.getElementById('resultsContent');
+            const pred = data.top_prediction;
+            const rec = data.recommendation;
+            
+            let html = `
+                <div class="prediction-result">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center;">
+                        <div>
+                            <img src="${data.image_path}" style="width: 100%; border-radius: 12px; box-shadow: var(--shadow);">
+                        </div>
+                        <div>
+                            <h2 class="disease-name">${pred.disease.replace(/_/g, ' ')}</h2>
+                            <p style="font-size: 1.2rem; color: var(--gray); margin-bottom: 1rem;">
+                                Confidence: <strong>${pred.percentage.toFixed(1)}%</strong>
+                            </p>
+                            <div class="confidence-bar">
+                                <div class="confidence-fill" style="width: ${pred.percentage}%;">
+                                    ${pred.percentage.toFixed(1)}%
+                                </div>
+                            </div>
+                            <p style="margin-top: 1rem; font-size: 0.95rem;">
+                                <strong>Severity:</strong> 
+                                <span class="severity-${rec.severity}">${rec.severity.toUpperCase()}</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="treatment-section">
+                    <h2>📖 Disease Information</h2>
+                    <p><strong>Description:</strong> ${rec.description}</p>
+                    <div style="margin-top: 1rem;">
+                        <p><strong>Symptoms:</strong></p>
+                        <ul style="margin-left: 1.5rem;">
+                            ${rec.symptoms.map(s => `<li>${s}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="treatment-section">
+                    <h2>⚡ Immediate Actions Required</h2>
+                    ${rec.immediate_actions.map(action => 
+                        `<div class="action-item">${action}</div>`
+                    ).join('')}
+                </div>
+                
+                <div class="recommendations">
+                    <div class="recommendation-card">
+                        <h3>🌱 Organic Treatment</h3>
+                        <ul>
+                            ${rec.treatment_plan.organic_options.map(opt => 
+                                `<li>${opt}</li>`
+                            ).join('')}
+                        </ul>
+                    </div>
+                    
+                    ${rec.treatment_plan.chemical_options.length > 0 ? `
+                        <div class="recommendation-card">
+                            <h3>🧪 Chemical Treatment</h3>
+                            <ul>
+                                ${rec.treatment_plan.chemical_options.map(opt => 
+                                    `<li>${opt}</li>`
+                                ).join('')}
+                            </ul>
+                            <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--gray);">
+                                <strong>Application Schedule:</strong> ${rec.treatment_plan.application_schedule}
+                            </p>
+                        </div>
+                    ` : ''}
+                    
+                    <div class="recommendation-card">
+                        <h3>🛡️ Prevention</h3>
+                        <ul>
+                            ${rec.prevention.map(prev => `<li>${prev}</li>`).join('')}
+                        </ul>
+                    </div>
+                    
+                    <div class="recommendation-card">
+                        <h3>🌾 Fertilizer Recommendation</h3>
+                        <p>${rec.fertilizer_recommendation}</p>
+                    </div>
+                </div>
+                
+                ${data.weather ? `
+                    <div class="treatment-section">
+                        <h2>🌦️ Current Weather Conditions</h2>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                            <div>
+                                <strong>Temperature:</strong> ${data.weather.temperature}°C
+                            </div>
+                            <div>
+                                <strong>Humidity:</strong> ${data.weather.humidity}%
+                            </div>
+                            <div>
+                                <strong>Conditions:</strong> ${data.weather.description}
+                            </div>
+                            <div>
+                                <strong>Wind Speed:</strong> ${data.weather.wind_speed} m/s
+                            </div>
+                        </div>
+                    </div>
+                ` : ''}
+                
+                <div class="treatment-section">
+                    <h2>💰 Economic Impact Assessment</h2>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                        <div>
+                            <strong>Potential Yield Loss:</strong><br>
+                            ${rec.economic_impact.yield_loss}
+                        </div>
+                        <div>
+                            <strong>Quality Impact:</strong><br>
+                            ${rec.economic_impact.quality_impact}
+                        </div>
+                        <div>
+                            <strong>Marketability:</strong><br>
+                            ${rec.economic_impact.marketability}
+                        </div>
+                        <div>
+                            <strong>Recommendation:</strong><br>
+                            ${rec.economic_impact.recommendation}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="treatment-section">
+                    <h2>📝 Additional Notes</h2>
+                    <ul style="list-style: none; padding: 0;">
+                        ${rec.additional_notes.map(note => 
+                            `<li style="padding: 0.5rem 0;">${note}</li>`
+                        ).join('')}
+                    </ul>
+                </div>
+            `;
+            
+            container.innerHTML = html;
+        }
+    </script>
+</body>
+</html>

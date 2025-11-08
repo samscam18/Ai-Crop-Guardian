@@ -1,0 +1,36 @@
+
+docker_compose = '''version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./uploads:/app/uploads
+      - ./models:/app/models
+      - ./data:/app/data
+    environment:
+      - FLASK_ENV=production
+      - SECRET_KEY=${SECRET_KEY}
+      - WEATHER_API_KEY=${WEATHER_API_KEY}
+    restart: unless-stopped
+    networks:
+      - crop-disease-network
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./certs:/etc/nginx/certs
+    depends_on:
+      - web
+    networks:
+      - crop-disease-network
+
+networks:
+  crop-disease-network:
+    driver: bridge

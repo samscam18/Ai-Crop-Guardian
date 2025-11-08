@@ -1,0 +1,33 @@
+# Python virtual environment
+venv/
+__pycache__/
+
+# Python cache and logs
+*.pyc
+*.pyo
+*.pyd
+*.log
+
+# Model files and large binaries
+*.h5
+*.ckpt
+*.pb
+*.tflite
+
+# Dataset folders (DON'T PUSH)
+data/
+dataset/
+datasets/
+*.zip
+*.csv
+*.npy
+*.npz
+*.pkl
+
+# IDE files
+.vscode/
+.idea/
+
+# OS-specific
+.DS_Store
+Thumbs.db

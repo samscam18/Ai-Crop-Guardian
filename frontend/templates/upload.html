@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Image - Crop Disease AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <svg width="40" height="40" viewBox="0 0 40 40">
+                    <path d="M20 5 L20 35 M10 15 L20 5 L30 15 M15 25 C15 25 15 30 20 30 C25 30 25 25 25 25"
+                        stroke="#10b981" fill="none" stroke-width="2" />
+                </svg>
+                <h1>Crop Disease AI</h1>
+            </div>
+            <nav>
+                <a href="/">Dashboard</a>
+                <a href="/upload" class="active">Diagnose</a>
+                <a href="/chatbot">🤖 Ask Assistant</a>
+                <a href="#" id="weatherBtn">Weather</a>
+            </nav>
+        </header>
+
+        <!-- Upload Content -->
+        <main class="upload-container">
+            <h1 style="text-align: center; margin-bottom: 2rem; color: var(--primary-color);">
+                🌿 Diagnose Crop Disease
+            </h1>
+
+            <form id="uploadForm" enctype="multipart/form-data">
+                <div id="uploadBox" class="upload-box">
+                    <div id="uploadPlaceholder">
+                        <div class="upload-icon">📸</div>
+                        <h2>Upload Leaf Image</h2>
+                        <p>Drag and drop or click to select</p>
+                        <p style="font-size: 0.9rem; color: var(--gray); margin-top: 1rem;">
+                            Supported formats: JPG, PNG, GIF, BMP (max 16MB)
+                        </p>
+                    </div>
+
+                    <!-- Image preview will show here -->
+                    <img id="imagePreview" style="display: none; max-width: 100%; border-radius: 8px;">
+                </div>
+
+
+                <input type="file" id="fileInput" name="file" accept="image/*" required>
+
+
+
+                <div style="margin-top: 2rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">
+                        Location (Optional):
+                    </label>
+                    <input type="text" name="location" placeholder="e.g., Bengaluru, India" value="Bengaluru, India"
+                        style="width: 100%; padding: 0.75rem; border: 1px solid var(--gray); 
+                                  border-radius: 8px; font-size: 1rem;">
+                    <p style="font-size: 0.85rem; color: var(--gray); margin-top: 0.5rem;">
+                        Location helps provide weather-based disease risk assessment
+                    </p>
+                </div>
+
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button type="submit" id="uploadBtn" class="btn btn-primary" style="display: none;">
+                        🔍 Analyze Disease
+                    </button>
+                </div>
+            </form>
+
+            <section id="resultsSection"
+                style="display:none; margin-top: 2rem; padding: 2rem; border-radius: 12px; background: #f9f9f9;">
+                <h2 style="text-align:center; color: var(--primary-color);">🌾 Prediction Results</h2>
+                <div id="resultContent" style="margin-top: 1.5rem;"></div>
+            </section>
+
+            <!-- Tips Section -->
+            <div style="margin-top: 3rem; background: var(--light-gray); padding: 2rem; border-radius: 12px;">
+                <h3 style="margin-bottom: 1rem;">📋 Tips for Best Results:</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="padding: 0.5rem 0;">✓ Take photos in good natural lighting</li>
+                    <li style="padding: 0.5rem 0;">✓ Focus on the affected area of the leaf</li>
+                    <li style="padding: 0.5rem 0;">✓ Ensure the image is clear and not blurry</li>
+                    <li style="padding: 0.5rem 0;">✓ Include the entire leaf if possible</li>
+                    <li style="padding: 0.5rem 0;">✓ Avoid shadows and reflections</li>
+                </ul>
+            </div>
+            <!-- Results Section -->
+
+
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+
+</html>
